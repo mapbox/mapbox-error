@@ -1,0 +1,30 @@
+{
+  "name": "mapbox-error",
+  "description": "Mapbox Error",
+  "author": "Mapbox (https://www.mapbox.com)",
+  "license": "Copyright © Mapbox",
+  "version": "1.0.0",
+  "main": "./index",
+  "engines": {
+    "node": "0.10.30"
+  },
+  "dependencies": {
+    "fastlog": "0.1.0"
+  },
+  "scripts": {
+    "test": "jshint *.js && tape test.js && retire -n"
+  },
+  "private": true,
+  "devDependencies": {
+    "retire": "0.3.x",
+    "jshint": "^2.5.1",
+    "tape": "3.0.x"
+  },
+  "jshintConfig": {
+    "node": true,
+    "undef": true,
+    "shadow": true,
+    "sub": true,
+    "trailing": true
+  }
+}
