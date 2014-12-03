@@ -9,13 +9,11 @@ function showError(err, req, res, next) {
 
     // Output unexpected errors to console but hide them from public eyes.
     if (err.status >= 500) {
-        if (process.env.NODE_ENV != 'test') {
-            err.url = req.url;
-            err.method = req.method;
-            err['x-amz-cf-id'] = req.headers['x-amz-cf-id'];
-            logger.error(err);
-            err.message = 'Internal Server Error';
-        }
+        err.url = req.url;
+        err.method = req.method;
+        err['x-amz-cf-id'] = req.headers['x-amz-cf-id'];
+        logger.error(err);
+        err.message = 'Internal Server Error';
     }
 
     res.jsonp(err.status, {message: err.message});
