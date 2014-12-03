@@ -17,7 +17,7 @@
   "private": true,
   "devDependencies": {
     "retire": "0.3.x",
-    "jshint": "^2.5.1",
+    "jshint": "~2.3.0",
     "tape": "3.0.x"
   },
   "jshintConfig": {
