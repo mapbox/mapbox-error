@@ -32,7 +32,7 @@ tape('showError', function(t){
 
     t.equal(logged, 1, 'message logged');
     t.equal(status, 500);
-    t.deepEqual(data, { message: 'fatal' });
+    t.deepEqual(data, { message: 'Internal Server Error' });
 
     t.end();
 });

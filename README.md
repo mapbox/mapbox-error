@@ -3,7 +3,6 @@
 #### usage:
 ``` javascript
 var errors = require('mapbox-error');
-
 var server = require('express')();
 
 // put these after other routes and uses have been defined

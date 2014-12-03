@@ -14,8 +14,8 @@ function showError(err, req, res, next) {
             err.method = req.method;
             err['x-amz-cf-id'] = req.headers['x-amz-cf-id'];
             logger.error(err);
+            err.message = 'Internal Server Error';
         }
-        if (process.env.NODE_ENV == 'production') err.message = 'Internal Server Error';
     }
 
     res.jsonp(err.status, {message: err.message});
