@@ -1,3 +1,5 @@
+[![Build Status](https://magnum.travis-ci.com/mapbox/atlas-server.svg?token=hLpUd9oZwpjSs5JzfqFa&branch=master)](https://magnum.travis-ci.com/mapbox/mapbox-error.svg?token=7y8zxnPkFHgvCBr6YJaA)
+
 ### Generic error middleware for express apps
 
 #### usage:
