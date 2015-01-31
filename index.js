@@ -1,8 +1,10 @@
 var logger = require('fastlog')();
+var http = require('http');
 
 module.exports = {};
 module.exports.showError = showError;
 module.exports.notFound = notFound;
+module.exports.ErrorHTTP = ErrorHTTP;
 
 function showError(err, req, res, next) {
     err.status = err.status || 500;
@@ -24,3 +26,20 @@ function notFound(req, res, next) {
     err.status = 404;
     next(err);
 }
+
+function ErrorHTTP(message, status) {
+    if (typeof message === 'number') {
+        status = message;
+        message = null;
+    }
+    if (!message) {
+        message = http.STATUS_CODES[status] || 'Unknown';
+    }
+
+    Error.call(this, message);
+    Error.captureStackTrace(this, arguments.callee);
+    this.message = message;
+    this.status = status;
+}
+
+ErrorHTTP.prototype = Object.create(Error.prototype);
