@@ -42,8 +42,9 @@ function ErrorHTTP(message, status) {
         status = message;
         message = null;
     }
+    status = status || 500;
     if (!message) {
-        message = http.STATUS_CODES[status] || 'Unknown';
+        message = http.STATUS_CODES[status];
     }
 
     Error.call(this, message);
