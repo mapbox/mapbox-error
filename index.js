@@ -13,7 +13,6 @@ function showError(err, req, res, next) {
     if (err.status >= 500) {
         err.url = req.url;
         err.method = req.method;
-        err['x-amz-cf-id'] = req.headers['x-amz-cf-id'];
         logger.error(err);
         err.message = 'Internal Server Error';
     }
