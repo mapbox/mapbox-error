@@ -1,8 +1,8 @@
 {
   "name": "mapbox-error",
-  "description": "Mapbox Error",
+  "description": "Error middleware for express apps",
   "author": "Mapbox (https://www.mapbox.com)",
-  "license": "Copyright © Mapbox",
+  "license": "ISC",
   "version": "1.1.0",
   "main": "./index",
   "engines": {
@@ -14,7 +14,6 @@
   "scripts": {
     "test": "jshint *.js && tape test.js && retire -n"
   },
-  "private": true,
   "devDependencies": {
     "retire": "0.3.x",
     "jshint": "~2.3.0",
