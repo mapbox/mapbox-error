@@ -22,9 +22,7 @@ function showError(err, req, res, next) {
 }
 
 function notFound(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+    next(new ErrorHTTP(404));
 }
 
 function ErrorHTTP(message, status) {
