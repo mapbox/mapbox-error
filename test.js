@@ -65,6 +65,32 @@ tape('showError - not 500', function(t) {
     t.end();
 });
 
+tape('showError - ErrorHTTP with 404 status property with extra properties', function(t) {
+    var logged = 0;
+    var status;
+    var data;
+
+    var req = new MockReq();
+    var res = new MockRes();
+    res.jsonp = function(s, d) {
+        status = s;
+        data = d;
+    };
+
+    var err = new errors.ErrorHTTP('Tileset does not exist', 404);
+    err.details = 'here are the details';
+    var origlog = console.log;
+    console.log = function() { logged++; };
+    errors.showError(err, req, res, function(){});
+    console.log = origlog;
+
+    t.equal(logged, 0, 'message not logged');
+    t.equal(status, 404);
+    t.deepEqual(data, { message: 'Tileset does not exist', details: 'here are the details' });
+
+    t.end();
+});
+
 tape('notFound', function(t) {
     var req = new MockReq();
     var res = new MockRes();
