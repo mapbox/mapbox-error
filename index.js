@@ -7,7 +7,7 @@ module.exports.notFound = notFound;
 module.exports.ErrorHTTP = ErrorHTTP;
 
 function showError(err, req, res, next) {
-    err.status = err.status || 500;
+    err.status = err instanceof ErrorHTTP ? err.status : 500;
 
     // Output unexpected errors to console but hide them from public eyes.
     if (err.status >= 500) {

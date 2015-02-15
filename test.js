@@ -12,7 +12,7 @@ function MockRes() {
 MockRes.prototype.set = function(k,v) { this.headers[k] = v; };
 MockRes.prototype.json = function() {};
 
-tape('showError', function(t) {
+tape('showError - Error', function(t) {
     var logged = 0;
     var status;
     var data;
@@ -37,7 +37,7 @@ tape('showError', function(t) {
     t.end();
 });
 
-tape('showError - not 500', function(t) {
+tape('showError - Error with 404 status property', function(t) {
     var logged = 0;
     var status;
     var data;
@@ -49,18 +49,16 @@ tape('showError - not 500', function(t) {
         data = d;
     };
 
-    var err = {
-        message: 'Tileset does not exist',
-        status: 404
-    };
+    var err = new Error('Tileset does not exist');
+    err.status = 404;
     var origlog = console.log;
     console.log = function() { logged++; };
     errors.showError(err, req, res, function(){});
     console.log = origlog;
 
-    t.equal(logged, 0, 'message not logged');
-    t.equal(status, 404);
-    t.deepEqual(data, { message: 'Tileset does not exist' });
+    t.equal(logged, 1, 'message not logged');
+    t.equal(status, 500);
+    t.deepEqual(data, { message: 'Internal Server Error' });
 
     t.end();
 });
