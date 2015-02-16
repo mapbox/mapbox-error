@@ -23,7 +23,7 @@ function showError(err, req, res, next) {
     // For non-500 ErrorHTTP objects send over any additional keys.
     // This error is one that we crafted ourselves deliberately for
     // public consumption.
-    if (err instanceof ErrorHTTP && err.status <= 500) {
+    if (err instanceof ErrorHTTP && err.status < 500) {
         for (var k in err) {
             if (k === 'status') continue;
             data[k] = err[k];
