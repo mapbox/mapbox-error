@@ -11,6 +11,10 @@
   "scripts": {
     "test": "jshint *.js && tape test.js && retire -n"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mapbox/mapbox-error.git"
+  },
   "devDependencies": {
     "retire": "0.3.x",
     "jshint": "~2.3.0",
