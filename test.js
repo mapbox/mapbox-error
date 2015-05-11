@@ -114,7 +114,11 @@ tape('ErrorHTTP', function(t) {
 
     err = new errors.ErrorHTTP('Server error');
     t.equal(err.message, 'Server error', 'sets message');
-    t.equal(err.status, undefined, 'does not set status without status');
+    t.equal(err.status, 500, 'status defaults to 500');
+
+    err = new errors.ErrorHTTP();
+    t.equal(err.message, 'Internal Server Error', 'sets message');
+    t.equal(err.status, 500, 'status defaults to 500');
 
     t.equal(Object.getPrototypeOf(err).toString(), 'Error', 'inherits from Error');
 
