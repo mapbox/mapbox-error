@@ -29,7 +29,7 @@ function showError(err, req, res, next) {
         }
     }
 
-    res.jsonp(err.status, data);
+    res.status(err.status).jsonp(data);
 }
 
 function notFound(req, res, next) {

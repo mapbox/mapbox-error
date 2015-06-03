@@ -11,18 +11,20 @@ function MockRes() {
 
 MockRes.prototype.set = function(k,v) { this.headers[k] = v; };
 MockRes.prototype.json = function() {};
+MockRes.prototype.status = function(s) {
+    this.status = s;
+    return this;
+};
+MockRes.prototype.jsonp = function(d) {
+    this.data = d;
+    return this;
+};
 
 tape('showError', function(t) {
     var logged = 0;
-    var status;
-    var data;
 
     var req = new MockReq();
     var res = new MockRes();
-    res.jsonp = function(s, d) {
-        status = s;
-        data = d;
-    };
 
     var origlog = console.log;
     console.log = function() { logged++; };
@@ -31,23 +33,17 @@ tape('showError', function(t) {
 
 
     t.equal(logged, 1, 'message logged');
-    t.equal(status, 500);
-    t.deepEqual(data, { message: 'Internal Server Error' });
+    t.equal(res.status, 500);
+    t.deepEqual(res.data, { message: 'Internal Server Error' });
 
     t.end();
 });
 
 tape('showError - not 500', function(t) {
     var logged = 0;
-    var status;
-    var data;
 
     var req = new MockReq();
     var res = new MockRes();
-    res.jsonp = function(s, d) {
-        status = s;
-        data = d;
-    };
 
     var err = {
         message: 'Tileset does not exist',
@@ -59,23 +55,17 @@ tape('showError - not 500', function(t) {
     console.log = origlog;
 
     t.equal(logged, 0, 'message not logged');
-    t.equal(status, 404);
-    t.deepEqual(data, { message: 'Tileset does not exist' });
+    t.equal(res.status, 404);
+    t.deepEqual(res.data, { message: 'Tileset does not exist' });
 
     t.end();
 });
 
 tape('showError - ErrorHTTP with 404 status property with extra properties', function(t) {
     var logged = 0;
-    var status;
-    var data;
 
     var req = new MockReq();
     var res = new MockRes();
-    res.jsonp = function(s, d) {
-        status = s;
-        data = d;
-    };
 
     var err = new errors.ErrorHTTP('Tileset does not exist', 404);
     err.details = 'here are the details';
@@ -85,8 +75,8 @@ tape('showError - ErrorHTTP with 404 status property with extra properties', fun
     console.log = origlog;
 
     t.equal(logged, 0, 'message not logged');
-    t.equal(status, 404);
-    t.deepEqual(data, { message: 'Tileset does not exist', details: 'here are the details' });
+    t.equal(res.status, 404);
+    t.deepEqual(res.data, { message: 'Tileset does not exist', details: 'here are the details' });
 
     t.end();
 });
