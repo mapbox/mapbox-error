@@ -3,7 +3,7 @@
   "description": "Error middleware for express apps",
   "author": "Mapbox (https://www.mapbox.com)",
   "license": "ISC",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "main": "./index",
   "dependencies": {
     "fastlog": "0.1.0"
