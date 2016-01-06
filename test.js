@@ -31,7 +31,6 @@ tape('showError', function(t) {
     errors.showError(new Error('fatal'), req, res, function(){});
     console.log = origlog;
 
-
     t.equal(logged, 1, 'message logged');
     t.equal(res.status, 500);
     t.deepEqual(res.data, { message: 'Internal Server Error' });
@@ -47,7 +46,7 @@ tape('showError - not 500', function(t) {
 
     var err = {
         message: 'Tileset does not exist',
-        status: 404
+        http_status: 404
     };
     var origlog = console.log;
     console.log = function() { logged++; };
@@ -69,6 +68,7 @@ tape('showError - ErrorHTTP with 404 status property with extra properties', fun
 
     var err = new errors.ErrorHTTP('Tileset does not exist', 404);
     err.details = 'here are the details';
+    err.status = 'NOT_FOUND';
     var origlog = console.log;
     console.log = function() { logged++; };
     errors.showError(err, req, res, function(){});
@@ -76,7 +76,11 @@ tape('showError - ErrorHTTP with 404 status property with extra properties', fun
 
     t.equal(logged, 0, 'message not logged');
     t.equal(res.status, 404);
-    t.deepEqual(res.data, { message: 'Tileset does not exist', details: 'here are the details' });
+    t.deepEqual(res.data, {
+        status: 'NOT_FOUND',
+        message: 'Tileset does not exist',
+        details: 'here are the details'
+    });
 
     t.end();
 });
@@ -86,7 +90,7 @@ tape('notFound', function(t) {
     var res = new MockRes();
 
     errors.notFound(req, res, function(err) {
-        t.equal(err.status, 404);
+        t.equal(err.http_status, 404);
         t.deepEqual(err.message, 'Not Found');
         t.end();
     });
@@ -95,20 +99,20 @@ tape('notFound', function(t) {
 tape('ErrorHTTP', function(t) {
     var err = new errors.ErrorHTTP('Testing error', 500);
     t.equal(err.message, 'Testing error', 'sets message');
-    t.equal(err.status, 500, 'sets status code');
+    t.equal(err.http_status, 500, 'sets status code');
     t.ok(err.stack, 'has stack trace');
 
     err = new errors.ErrorHTTP(404);
     t.equal(err.message, 'Not Found', 'sets message based on status code');
-    t.equal(err.status, 404, 'sets status');
+    t.equal(err.http_status, 404, 'sets status');
 
     err = new errors.ErrorHTTP('Server error');
     t.equal(err.message, 'Server error', 'sets message');
-    t.equal(err.status, 500, 'status defaults to 500');
+    t.equal(err.http_status, 500, 'status defaults to 500');
 
     err = new errors.ErrorHTTP();
     t.equal(err.message, 'Internal Server Error', 'sets message');
-    t.equal(err.status, 500, 'status defaults to 500');
+    t.equal(err.http_status, 500, 'status defaults to 500');
 
     t.equal(Object.getPrototypeOf(err).toString(), 'Error', 'inherits from Error');
 
