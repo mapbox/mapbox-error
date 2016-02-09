@@ -9,7 +9,7 @@
     "fastlog": "0.1.0"
   },
   "scripts": {
-    "test": "jshint *.js && tape test.js && retire -n"
+    "test": "eslint index.js && jshint *.js && tape test.js && retire -n"
   },
   "repository": {
     "type": "git",
@@ -18,7 +18,9 @@
   "devDependencies": {
     "retire": "0.3.x",
     "jshint": "~2.3.0",
-    "tape": "3.0.x"
+    "tape": "3.0.x",
+    "eslint": "~1.00.0",
+    "eslint-config-unstyled": "^1.1.0"
   },
   "jshintConfig": {
     "node": true,
