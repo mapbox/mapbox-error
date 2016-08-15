@@ -92,6 +92,55 @@ tape('notFound', function(t) {
     });
 });
 
+tape('fastErrorHTTP', function(t) {
+    var PreconfitionFailed = errors.fastErrorHTTP('PreconfitionFailed', 422);
+    var ServerError = errors.fastErrorHTTP('ServerError');
+
+    var err = new PreconfitionFailed('input field expected');
+    t.equal(err.message, 'input field expected', 'sets message');
+    t.equal(err.code, 'PreconfitionFailed', 'sets code');
+    t.equal(err.status, 422, 'sets status code');
+    t.ok(err.stack, 'has stack trace');
+    t.ok(err instanceof PreconfitionFailed);
+    t.ok(err instanceof errors.ErrorHTTP);
+
+    err = new PreconfitionFailed();
+    t.equal(err.message, 'Unprocessable Entity', 'sets message based on status code');
+    t.equal(err.code, 'PreconfitionFailed', 'sets code');
+    t.equal(err.status, 422, 'sets status code');
+    t.ok(err.stack, 'has stack trace');
+    t.ok(err instanceof PreconfitionFailed);
+    t.ok(err instanceof errors.ErrorHTTP);
+
+    err = new ServerError('Server error');
+    t.equal(err.message, 'Server error', 'sets message');
+    t.equal(err.code, 'ServerError', 'sets code');
+    t.equal(err.status, 500, 'status defaults to 500');
+    t.ok(err.stack, 'has stack trace');
+    t.ok(err instanceof ServerError);
+    t.ok(err instanceof errors.ErrorHTTP);
+
+    err = new ServerError();
+    t.equal(err.message, 'Internal Server Error', 'sets message based on status code');
+    t.equal(err.code, 'ServerError', 'sets code');
+    t.equal(err.status, 500, 'status defaults to 500');
+    t.ok(err.stack, 'has stack trace');
+    t.ok(err instanceof ServerError);
+    t.ok(err instanceof errors.ErrorHTTP);
+
+    err = new ServerError('[%s] bar', 'foo');
+    t.equal(err.message, '[foo] bar', 'expands message');
+    t.equal(err.code, 'ServerError', 'sets code');
+    t.equal(err.status, 500, 'status defaults to 500');
+    t.ok(err.stack, 'has stack trace');
+    t.ok(err instanceof ServerError);
+    t.ok(err instanceof errors.ErrorHTTP);
+
+    t.equal(Object.getPrototypeOf(err).toString(), 'Error', 'inherits from Error');
+
+    t.end();
+});
+
 tape('ErrorHTTP', function(t) {
     var err = new errors.ErrorHTTP('Testing error', 500);
     t.equal(err.message, 'Testing error', 'sets message');

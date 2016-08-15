@@ -1,9 +1,11 @@
 var logger = require('fastlog')();
 var http = require('http');
+var util = require('util');
 
 module.exports = {};
 module.exports.showError = showError;
 module.exports.notFound = notFound;
+module.exports.fastErrorHTTP = fastErrorHTTP;
 module.exports.ErrorHTTP = ErrorHTTP;
 
 function showError(err, req, res, next) {
@@ -34,6 +36,22 @@ function showError(err, req, res, next) {
 
 function notFound(req, res, next) {
     next(new ErrorHTTP(404));
+}
+
+function fastErrorHTTP(code, status) {
+    if (typeof code !== 'string' && typeof code !== 'number') {
+        throw new Error('code is required to be a string or number');
+    }
+
+    function FastErrorHTTP() {
+        var message = util.format.apply(null, arguments);
+        this.code = code;
+        ErrorHTTP.call(this, message, status);
+    }
+
+    FastErrorHTTP.prototype = Object.create(ErrorHTTP.prototype);
+
+    return FastErrorHTTP;
 }
 
 function ErrorHTTP(message, status) {
