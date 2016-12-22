@@ -1,5 +1,5 @@
 {
-  "name": "mapbox-error",
+  "name": "@mapbox/mapbox-error",
   "description": "Error middleware for express apps",
   "author": "Mapbox (https://www.mapbox.com)",
   "license": "ISC",
