@@ -19,19 +19,25 @@ function showError(err, req, res, next) {
         err.message = 'Internal Server Error';
     }
 
-    var data = { message:err.message };
+    var data;
+    if (typeof err.message === 'object') {
+        data = err.message;
+    } else {
+        data = { message: err.message };
 
-    // For non-500 ErrorHTTP objects send over any additional keys.
-    // This error is one that we crafted ourselves deliberately for
-    // public consumption.
-    if (err instanceof ErrorHTTP && err.status < 500) {
-        for (var k in err) {
-            if (k === 'status') continue;
-            data[k] = err[k];
+        // For non-500 ErrorHTTP objects without own message body we send over any additional keys.
+        // This error is one that we crafted ourselves deliberately for
+        // public consumption.
+        if (err instanceof ErrorHTTP && err.status < 500) {
+            for (var k in err) {
+                if (k === 'status') continue;
+                data[k] = err[k];
+            }
         }
     }
 
     res.status(err.status).jsonp(data);
+    next();
 }
 
 function notFound(req, res, next) {
@@ -59,12 +65,13 @@ function ErrorHTTP(message, status) {
         status = message;
         message = null;
     }
+
     status = status || 500;
     if (!message) {
         message = http.STATUS_CODES[status];
     }
 
-    Error.call(this, message);
+    Error.call(this, typeof message === 'object' ? message.message : message);
     Error.captureStackTrace(this, arguments.callee);
     this.message = message;
     this.status = status;

@@ -147,6 +147,11 @@ tape('ErrorHTTP', function(t) {
     t.equal(err.status, 500, 'sets status code');
     t.ok(err.stack, 'has stack trace');
 
+    var err = new errors.ErrorHTTP({ message: 'Testing error', details: 'more details' }, 500);
+    t.deepEqual(err.message, { message: 'Testing error', details: 'more details' }, 'sets message object');
+    t.equal(err.status, 500, 'sets status code');
+    t.ok(err.stack, 'has stack trace');
+
     err = new errors.ErrorHTTP(404);
     t.equal(err.message, 'Not Found', 'sets message based on status code');
     t.equal(err.status, 404, 'sets status');
