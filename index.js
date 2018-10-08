@@ -43,8 +43,8 @@ function fastErrorHTTP(code, status) {
   }
 
   class FastErrorHTTP extends ErrorHTTP {
-    constructor(...params) {
-      const message = util.format(...params);
+    constructor() {
+      const message = util.format(...arguments);
       super(message, status);
       this.code = code;
     }
