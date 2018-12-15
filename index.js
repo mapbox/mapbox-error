@@ -66,7 +66,7 @@ function fastErrorHTTP(code, status) {
  */
 
 // NOTE: next is needed, even if not used, per https://expressjs.com/en/guide/using-middleware.html
-function showError(err, req, res, next) {
+function showError(err, req, res, next) { // eslint-disable-line no-unused-vars
   err.status = err.status || 500;
 
   // Output unexpected errors to console but hide them from public eyes.
