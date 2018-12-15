@@ -27,10 +27,11 @@ tape('showError', (t) => {
 
   const req = new MockReq();
   const res = new MockRes();
+  const next = function () {};
 
   const origlog = console.log;
   console.log = function() { logged++; };
-  errors.showError(new Error('fatal'), req, res, () => {});
+  errors.showError(new Error('fatal'), req, res, next, () => {});
   console.log = origlog;
 
   t.equal(logged, 1, 'message logged');
@@ -45,6 +46,7 @@ tape('showError - not 500', (t) => {
 
   const req = new MockReq();
   const res = new MockRes();
+  const next = function () {};
 
   const err = {
     message: 'Tileset does not exist',
@@ -52,7 +54,7 @@ tape('showError - not 500', (t) => {
   };
   const origlog = console.log;
   console.log = function() { logged++; };
-  errors.showError(err, req, res, () => {});
+  errors.showError(err, req, res, next, () => {});
   console.log = origlog;
 
   t.equal(logged, 0, 'message not logged');
@@ -67,12 +69,13 @@ tape('showError - ErrorHTTP with 404 status property with extra properties', (t)
 
   const req = new MockReq();
   const res = new MockRes();
+  const next = function () {};
 
   const err = new errors.ErrorHTTP('Tileset does not exist', 404);
   err.details = 'here are the details';
   const origlog = console.log;
   console.log = function() { logged++; };
-  errors.showError(err, req, res, () => {});
+  errors.showError(err, req, res, next, () => {});
   console.log = origlog;
 
   t.equal(logged, 0, 'message not logged');
