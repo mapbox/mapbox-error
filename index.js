@@ -64,7 +64,9 @@ function fastErrorHTTP(code, status) {
  * Any status codes <500 are assumed to contain error messages crafted
  * for public consumption.
  */
-function showError(err, req, res) {
+
+// NOTE: next is needed, even if not used, per https://expressjs.com/en/guide/using-middleware.html
+function showError(err, req, res, next) { // eslint-disable-line no-unused-vars
   err.status = err.status || 500;
 
   // Output unexpected errors to console but hide them from public eyes.
