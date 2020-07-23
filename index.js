@@ -9,7 +9,7 @@ const util = require('util');
  * @extends Error
  */
 class ErrorHTTP extends Error {
-  constructor(message, status = 500) {
+  constructor(message, status = 500, cache = 'max-age=60,s-maxage=300') {
     super();
 
     if (typeof message === 'number') {
@@ -25,6 +25,7 @@ class ErrorHTTP extends Error {
     Error.captureStackTrace(this, ErrorHTTP);
     this.message = message;
     this.status = status;
+    this.cache = cache;
   }
 }
 
@@ -89,6 +90,10 @@ function showError(err, req, res, next) { // eslint-disable-line no-unused-vars
     }
   }
 
+  // By default, errors should have shorter custom TTLs rather than
+  // relying on our application's defaults which likely have good
+  // reason to be longer.
+  res.set('Cache-Control', err.cache);
   res.status(err.status).jsonp(data);
 }
 
