@@ -9,7 +9,7 @@ const util = require('util');
  * @extends Error
  */
 class ErrorHTTP extends Error {
-  constructor(message, status = 500, cache = 'max-age=60,s-maxage=300') {
+  constructor(message, status = 500, ttl) {
     super();
 
     if (typeof message === 'number') {
@@ -25,7 +25,7 @@ class ErrorHTTP extends Error {
     Error.captureStackTrace(this, ErrorHTTP);
     this.message = message;
     this.status = status;
-    this.cache = cache;
+    this.ttl = ttl;
   }
 }
 
@@ -67,7 +67,7 @@ function fastErrorHTTP(code, status) {
  */
 
 // NOTE: next is needed, even if not used, per https://expressjs.com/en/guide/using-middleware.html
-function showError(err, req, res, next) { // eslint-disable-line no-unused-vars
+function showError(err, req, res, next, ttl) { // eslint-disable-line no-unused-vars
   err.status = err.status || 500;
 
   // Output unexpected errors to console but hide them from public eyes.
@@ -85,15 +85,21 @@ function showError(err, req, res, next) { // eslint-disable-line no-unused-vars
   // public consumption.
   if (err instanceof ErrorHTTP && err.status < 500) {
     for (const k in err) {
-      if (k === 'status' || k === 'cache') continue;
+      if (k === 'status' || k === 'ttl') continue;
       data[k] = err[k];
     }
   }
 
-  // By default, errors should have shorter custom TTLs rather than
-  // relying on our application's defaults which likely have good
-  // reason to be longer.
-  res.set('Cache-Control', err.cache);
+  // Allow downstream APIs to provide custom cache-control values
+  // for their errors, while also ensure that we respect any custom
+  // cache-control values set at the ErrorHTTP level.
+  if (ttl && !err.ttl) {
+    res.set('Cache-Control', ttl);
+  }
+  if (err.ttl) {
+    res.set('Cache-Control', err.ttl);
+  }
+
   res.status(err.status).jsonp(data);
 }
 
