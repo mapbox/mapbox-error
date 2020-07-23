@@ -1,8 +1,8 @@
 # Changelog
 
-## 3.1.0
+## 4.0.0
 
-* Added default cache-control within `showError` handler
+* Added default cache-control within `showError` handler [#19](https://github.com/mapbox/mapbox-error/pull/19)
 * No longer test on EOL versions of Node
 
 ## 3.0.1
