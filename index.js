@@ -85,7 +85,7 @@ function showError(err, req, res, next) { // eslint-disable-line no-unused-vars
   // public consumption.
   if (err instanceof ErrorHTTP && err.status < 500) {
     for (const k in err) {
-      if (k === 'status') continue;
+      if (k === 'status' || k === 'cache') continue;
       data[k] = err[k];
     }
   }
