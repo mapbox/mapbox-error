@@ -85,6 +85,19 @@ tape('showError - ErrorHTTP with 404 status property with extra properties', (t)
   t.end();
 });
 
+tape('showError - ErrorHTTP with 403 status with custom TTL', (t) => {
+  const req = new MockReq();
+  const res = new MockRes();
+  const next = function () {};
+
+  const err = new errors.ErrorHTTP('I forbid it', 403);
+  errors.showError(err, req, res, next, 'max-age=10000,s-maxage=10000');
+
+  t.equal(res.status, 403);
+  t.equal(res.headers['Cache-Control'], 'max-age=10000,s-maxage=10000');
+  t.end();
+});
+
 tape('notFound', (t) => {
   const req = new MockReq();
   const res = new MockRes();
@@ -154,7 +167,7 @@ tape('ErrorHTTP', (t) => {
   err = new errors.ErrorHTTP(404);
   t.equal(err.message, 'Not Found', 'sets message based on status code');
   t.equal(err.status, 404, 'sets status');
-  t.equal(err.cache, 'max-age=60,s-maxage=300');
+  t.equal(err.ttl, undefined, 'no default ttl');
 
   err = new errors.ErrorHTTP('Server error');
   t.equal(err.message, 'Server error', 'sets message');
@@ -163,12 +176,12 @@ tape('ErrorHTTP', (t) => {
   err = new errors.ErrorHTTP();
   t.equal(err.message, 'Internal Server Error', 'sets message');
   t.equal(err.status, 500, 'status defaults to 500');
-  t.equal(err.cache, 'max-age=60,s-maxage=300', 'sets cache default');
+  t.equal(err.ttl, undefined, 'no default ttl');
 
   err = new errors.ErrorHTTP('Custom cache error', 410, 'max-age=4200,s-maxage=4200');
   t.equal(err.message, 'Custom cache error', 'sets message');
   t.equal(err.status, 410, 'sets status');
-  t.equal(err.cache, 'max-age=4200,s-maxage=4200', 'sets custom cache');
+  t.equal(err.ttl, 'max-age=4200,s-maxage=4200', 'sets custom cache');
 
   t.equal(Object.getPrototypeOf(err).toString(), 'Error', 'inherits from Error');
 
