@@ -80,7 +80,7 @@ tape('showError - ErrorHTTP with 404 status property with extra properties', (t)
 
   t.equal(logged, 0, 'message not logged');
   t.equal(res.status, 404);
-  t.deepEqual(res.data, { message: 'Tileset does not exist', details: 'here are the details' });
+  t.deepEqual(res.data, { message: 'Tileset does not exist', details: 'here are the details', cache: 'max-age=60,s-maxage=300' });
 
   t.end();
 });
@@ -154,6 +154,7 @@ tape('ErrorHTTP', (t) => {
   err = new errors.ErrorHTTP(404);
   t.equal(err.message, 'Not Found', 'sets message based on status code');
   t.equal(err.status, 404, 'sets status');
+  t.equal(err.cache, 'max-age=60,s-maxage=300');
 
   err = new errors.ErrorHTTP('Server error');
   t.equal(err.message, 'Server error', 'sets message');
@@ -162,6 +163,12 @@ tape('ErrorHTTP', (t) => {
   err = new errors.ErrorHTTP();
   t.equal(err.message, 'Internal Server Error', 'sets message');
   t.equal(err.status, 500, 'status defaults to 500');
+  t.equal(err.cache, 'max-age=60,s-maxage=300', 'sets cache default');
+
+  err = new errors.ErrorHTTP('Custom cache error', 410, 'max-age=4200,s-maxage=4200');
+  t.equal(err.message, 'Custom cache error', 'sets message');
+  t.equal(err.status, 410, 'sets status');
+  t.equal(err.cache, 'max-age=4200,s-maxage=4200', 'sets custom cache');
 
   t.equal(Object.getPrototypeOf(err).toString(), 'Error', 'inherits from Error');
 
