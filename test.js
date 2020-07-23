@@ -80,7 +80,7 @@ tape('showError - ErrorHTTP with 404 status property with extra properties', (t)
 
   t.equal(logged, 0, 'message not logged');
   t.equal(res.status, 404);
-  t.deepEqual(res.data, { message: 'Tileset does not exist', details: 'here are the details', cache: 'max-age=60,s-maxage=300' });
+  t.deepEqual(res.data, { message: 'Tileset does not exist', details: 'here are the details' });
 
   t.end();
 });
