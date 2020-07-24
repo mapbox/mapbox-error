@@ -30,6 +30,23 @@ class ErrorHTTP extends Error {
 }
 
 /**
+ * Validate that the provided ttl value is acceptable
+ *
+ * @param {String} ttl - cache-control value you want to validate
+ */
+function validateCacheControl(ttl) {
+
+  if (typeof ttl !== 'string') {
+    throw new TypeError('cache-control ttl must be a string');
+  }
+
+  const acceptedValues = /(must-|no-|public|private|proxy|max-age=|s-maxage=)/;
+  if (!ttl.match(acceptedValues)) {
+    throw new TypeError(`invalid directive ${ttl}`);
+  }
+}
+
+/**
  * Generates a custom error object used for specific error handling.
  * Extends the ErrorHTTP class.
  *
@@ -91,12 +108,14 @@ function showError(err, req, res, next, ttl) { // eslint-disable-line no-unused-
   }
 
   // Allow downstream APIs to provide custom cache-control values
-  // for their errors, while also ensure that we respect any custom
+  // for their errors, while also ensuring that we respect any custom
   // cache-control values set at the ErrorHTTP level.
   if (ttl && !err.ttl) {
+    validateCacheControl(ttl);
     res.set('Cache-Control', ttl);
   }
   if (err.ttl) {
+    validateCacheControl(err.ttl);
     res.set('Cache-Control', err.ttl);
   }
 

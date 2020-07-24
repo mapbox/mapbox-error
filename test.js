@@ -31,7 +31,7 @@ tape('showError', (t) => {
 
   const origlog = console.log;
   console.log = function() { logged++; };
-  errors.showError(new Error('fatal'), req, res, next, () => {});
+  errors.showError(new Error('fatal'), req, res, next);
   console.log = origlog;
 
   t.equal(logged, 1, 'message logged');
@@ -54,7 +54,7 @@ tape('showError - not 500', (t) => {
   };
   const origlog = console.log;
   console.log = function() { logged++; };
-  errors.showError(err, req, res, next, () => {});
+  errors.showError(err, req, res, next);
   console.log = origlog;
 
   t.equal(logged, 0, 'message not logged');
@@ -75,7 +75,7 @@ tape('showError - ErrorHTTP with 404 status property with extra properties', (t)
   err.details = 'here are the details';
   const origlog = console.log;
   console.log = function() { logged++; };
-  errors.showError(err, req, res, next, () => {});
+  errors.showError(err, req, res, next);
   console.log = origlog;
 
   t.equal(logged, 0, 'message not logged');
@@ -96,6 +96,34 @@ tape('showError - ErrorHTTP with 403 status with custom TTL', (t) => {
   t.equal(res.status, 403);
   t.equal(res.headers['Cache-Control'], 'max-age=10000,s-maxage=10000');
   t.end();
+});
+
+tape('showError - throws internal error on non-string TTL', (t) => {
+  const req = new MockReq();
+  const res = new MockReq();
+  const next = function () {};
+
+  const err = new errors.ErrorHTTP('It\'s gone', 410);
+  try {
+    errors.showError(err, req, res, next, 20);
+  } catch (e) {
+    t.equal(e.message, 'cache-control ttl must be a string', 'throws expected error');
+    t.end();
+  }
+});
+
+tape('showError - throws internal error on incorrect directive', (t) => {
+  const req = new MockReq();
+  const res = new MockRes();
+  const next = function () {};
+
+  const err = new errors.ErrorHTTP('I\'m a teapot', 418);
+  try {
+    errors.showError(err, req, res, next, 'coffee');
+  } catch (e) {
+    t.equal(e.message, 'invalid directive coffee');
+    t.end();
+  }
 });
 
 tape('notFound', (t) => {
