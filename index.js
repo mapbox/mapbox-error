@@ -1,6 +1,6 @@
 'use strict';
 
-const logger = require('fastlog')();
+const logger = require('@mapbox/fastlog')();
 const http = require('http');
 const util = require('util');
 
