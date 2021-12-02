@@ -19,10 +19,11 @@ jobs:
     steps:
       - checkout
       # Install mbx-ci and make it executable.
-      - curl -Ls https://mapbox-release-engineering.s3.amazonaws.com/mbx-ci/latest/mbx-ci-linux-amd64 > mbx-ci && chmod 755 ./mbx-ci
-      - ./mbx-ci npm token --write-file
-      - npm ci
-      - npm test
+      - run: curl -Ls https://mapbox-release-engineering.s3.amazonaws.com/mbx-ci/latest/mbx-ci-linux-amd64 > mbx-ci && chmod 755 ./mbx-ci
+      - run: ./mbx-ci npm token --write-file
+      - node/install:
+          node-version: << parameters.node-version >>
+      - run: npm test
 
 workflows:
   all-tests:
