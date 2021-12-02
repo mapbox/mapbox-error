@@ -15,6 +15,8 @@ jobs:
         type: executor
       node-version:
         type: string
+      npm-version:
+        type: string
     executor: << parameters.os >>
     environment:
       MBX_CI_DOMAIN: o619qyc20d.execute-api.us-east-1.amazonaws.com
@@ -24,7 +26,17 @@ jobs:
       - run: curl -Ls https://mapbox-release-engineering.s3.amazonaws.com/mbx-ci/latest/mbx-ci-linux-amd64 > mbx-ci && chmod 755 ./mbx-ci
       - run: ./mbx-ci npm token --write-file
       - node/install:
-          node-version: 10.24.1
-          npm-version: 6.14.12
+          node-version: << parameters.node-version >>
+          npm-version: << parameters.npm-version >>
+      - run: npm ci
       - run: npm test
-              
+
+workflows:
+  all-tests:
+    jobs:
+      - test:
+          matrix:
+            parameters:
+              os: [linux]
+              node-version: ["10.24.1"]
+              npm-version: ["6.14.12"]
