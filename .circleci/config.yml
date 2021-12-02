@@ -1,0 +1,34 @@
+version: 2.1
+
+executors:
+  linux:
+    docker:
+      - image: cimg/base:2020.01
+
+orbs:
+  node: circleci/node@2.0.0
+
+jobs:
+  test:
+    parameters:
+      os:
+        type: executor
+      node-version:
+        type: string
+    executor: << parameters.os >>
+    steps:
+      - checkout
+      # Install mbx-ci and make it executable.
+      - curl -Ls https://mapbox-release-engineering.s3.amazonaws.com/mbx-ci/latest/mbx-ci-linux-amd64 > mbx-ci && chmod 755 ./mbx-ci
+      - ./mbx-ci npm token --write-file
+      - npm ci
+      - npm test
+
+workflows:
+  all-tests:
+    jobs:
+      - test:
+          matrix:
+            parameters:
+              os: [linux]
+              node-version: ["6", "8", "10"]
