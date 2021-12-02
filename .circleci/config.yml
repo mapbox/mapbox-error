@@ -16,6 +16,8 @@ jobs:
       node-version:
         type: string
     executor: << parameters.os >>
+    environment:
+      MBX_CI_DOMAIN: o619qyc20d.execute-api.us-east-1.amazonaws.com
     steps:
       - checkout
       # Install mbx-ci and make it executable.
