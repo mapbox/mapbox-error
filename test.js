@@ -85,6 +85,25 @@ tape('showError - ErrorHTTP with 404 status property with extra properties', (t)
   t.end();
 });
 
+tape('showErrorWithOptions - Uses provided custom logger', (t) => {
+  let callCount = 0;
+  const logger = { 
+    error: () => callCount++,
+  }
+  const err = new errors.ErrorHTTP('Internal Server Error', 500);
+  err.details = 'here are the details';
+  const req = new MockReq();
+  const res = new MockRes();
+  const next = function () {};
+  const showErrors = errors.showErrorWithOptions({ logger });
+  showErrors(err, req, res, next);
+
+  t.equal(callCount, 1, 'provided custom logger was not called');
+  t.equal(res.status, 500);
+  t.deepEqual(res.data, { message: 'Internal Server Error' });
+  t.end();
+});
+
 tape('notFound', (t) => {
   const req = new MockReq();
   const res = new MockRes();
