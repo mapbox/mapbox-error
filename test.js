@@ -104,6 +104,14 @@ tape('showErrorWithOptions - Uses provided custom logger', (t) => {
   t.end();
 });
 
+tape('showErrorWithOptions - Provided logger must have a callable error property', (t) => {
+  const logger = { 
+    info: () => {},
+  }
+  t.throws(() => errors.showErrorWithOptions({ logger }));
+  t.end();
+});
+
 tape('notFound', (t) => {
   const req = new MockReq();
   const res = new MockRes();

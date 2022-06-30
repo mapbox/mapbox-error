@@ -71,6 +71,11 @@ function fastErrorHTTP(code, status) {
  */
 function showErrorWithOptions(options = {}) {
   const logger = options.logger || fastlogLogger;
+
+  if(!logger.error || typeof logger.error !== 'function'){
+    throw new Error(`Logger must have property 'error' and it must be a function`)
+  }
+  
   // NOTE: next is needed, even if not used, per https://expressjs.com/en/guide/using-middleware.html
   return (err, req, res, next)  => { // eslint-disable-line no-unused-vars
     err.status = err.status || 500;
