@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.0
+
+* Allows providing a custom logger for the showError middleware
+
 ## 3.0.3
 
 * Updated `@mapbox/fastlog` to version `1.3.3`, because the previous versions have an upstream dependency to vulnerable version of `minimist`.
