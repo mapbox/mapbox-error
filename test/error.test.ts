@@ -1,5 +1,5 @@
 import { it, expect } from 'vitest';
-import { ErrorHTTP, fastErrorHTTP } from '../src';
+import { ErrorHTTP, customErrorHTTP } from '../src';
 
 it('ErrorHTTP', () => {
   const defaultErrorHTTP = new ErrorHTTP();
@@ -23,15 +23,15 @@ it('ErrorHTTP', () => {
   expect(unknownCode.stack).toContain('Error: Unknown status 999');
 });
 
-it('FastErrorHTTP', () => {
+it('customErrorHTTP', () => {
   expect(() => {
-    (fastErrorHTTP as any)();
+    (customErrorHTTP as any)();
   }).toThrowError(/code is required to be a string or number/);
   expect(() => {
-    (fastErrorHTTP as any)(function() {});
+    (customErrorHTTP as any)(function() {});
   }).toThrowError(/code is required to be a string or number/);
 
-  const CustomErrorType = fastErrorHTTP('MyCustomErrorTypeCode', 401);
+  const CustomErrorType = customErrorHTTP('MyCustomErrorTypeCode', 401);
   const defaultErrorHTTP = new CustomErrorType();
   expect(defaultErrorHTTP.code).toBe('MyCustomErrorTypeCode');
   expect(defaultErrorHTTP.status).toBe(401);
@@ -51,7 +51,7 @@ it('FastErrorHTTP', () => {
   expect(messageErrorHTTP.message).toBe('something custom happened');
   expect(messageErrorHTTP.stack).toContain('Error: something custom happened');
 
-  const ServerError = fastErrorHTTP('CustomServerError');
+  const ServerError = customErrorHTTP('CustomServerError');
   const defaultServerError = new ServerError();
   expect(defaultServerError.code).toBe('CustomServerError');
   expect(defaultServerError.status).toBe(500);
@@ -64,7 +64,7 @@ it('FastErrorHTTP', () => {
   expect(messaageServerError.message).toBe('[foo:baz:bang] bar');
   expect(messaageServerError.stack).toContain('Error: [foo:baz:bang] bar');
 
-  const NumericCode = fastErrorHTTP(400);
+  const NumericCode = customErrorHTTP(400);
   const numericErrorCode = new NumericCode();
   expect(numericErrorCode.code).toBe(400);
   expect(numericErrorCode.status).toBe(500);

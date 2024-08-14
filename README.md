@@ -33,9 +33,9 @@ server.use(notFound());
 You can create and re-use error classes
 
 ```js
-import { fastErrorHTTP } from '@mapbox/mapbox-error';
+import { customErrorHTTP } from '@mapbox/mapbox-error';
 
-const InvalidToken = fastErrorHTTP('InvalidToken', 401);
+const InvalidToken = customErrorHTTP('InvalidToken', 401);
 
 // within an express middleware...
 next(new InvalidToken());
