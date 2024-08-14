@@ -45,7 +45,7 @@ export function showError(options?: ShowErrorOptions) {
     if (err instanceof ErrorHTTP && err.status < 500) {
       for (const k in err) {
         if (k === 'status') continue;
-        data[k] = (err as any)[k];
+        const { status, ...data } = err;
       }
     }
   
