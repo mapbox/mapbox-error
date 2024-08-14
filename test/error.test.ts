@@ -63,4 +63,11 @@ it('FastErrorHTTP', () => {
   expect(messaageServerError.status).toBe(500);
   expect(messaageServerError.message).toBe('[foo:baz:bang] bar');
   expect(messaageServerError.stack).toContain('Error: [foo:baz:bang] bar');
+
+  const NumericCode = fastErrorHTTP(400);
+  const numericErrorCode = new NumericCode();
+  expect(numericErrorCode.code).toBe(400);
+  expect(numericErrorCode.status).toBe(500);
+  expect(numericErrorCode.message).toBe('Internal Server Error');
+  expect(numericErrorCode.stack).toContain('Error: Internal Server Error');
 });

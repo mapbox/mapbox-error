@@ -36,7 +36,7 @@ export class ErrorHTTP extends Error {
  * @extends ErrorHTTP
  * @returns {Class} - an error handling class
  */
-export function fastErrorHTTP(code: string, status?: number) {
+export function fastErrorHTTP(code: string | number, status?: number) {
   if (typeof code !== 'string' && typeof code !== 'number') {
     throw new Error('code is required to be a string or number');
   }
