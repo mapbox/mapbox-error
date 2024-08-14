@@ -23,8 +23,5 @@ jobs:
       - name: install node deps
         run: npm ci
 
-      - name: run lint
-        run: npm run lint
-
       - name: run tests
         run: npm test

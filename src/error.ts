@@ -16,7 +16,7 @@ export class ErrorHTTP extends Error {
       this.message = STATUS_CODES[status] as string;
     } else if (typeof message === 'number') {
       this.status = message;
-      this.message = STATUS_CODES[this.status] as string;
+      this.message = STATUS_CODES[this.status] || `Unknown status ${this.status}`;
     } else {
       this.message = message;
       this.status = status;

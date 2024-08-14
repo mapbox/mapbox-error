@@ -16,6 +16,11 @@ it('ErrorHTTP', () => {
   expect(messageAndStatus.status).toBe(401);
   expect(messageAndStatus.message).toBe('Wrongo');
   expect(messageAndStatus.stack).toContain('Error: Wrongo');
+
+  const unknownCode = new ErrorHTTP(999);
+  expect(unknownCode.status).toBe(999);
+  expect(unknownCode.message).toBe('Unknown status 999');
+  expect(unknownCode.stack).toContain('Error: Unknown status 999');
 });
 
 it('FastErrorHTTP', () => {
