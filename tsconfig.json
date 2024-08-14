@@ -40,6 +40,6 @@
     /* Generate .d.ts declaration files */
     "declaration": true
   },
-  "include": ["src/**/*", "vitest.config.ts"],
-  "exclude": ["./node_modules", "cdk.out"]
+  "include": ["src/**/*"],
+  "exclude": ["./node_modules"]
 }
