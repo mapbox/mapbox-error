@@ -1,3 +1,6 @@
 node_modules
-.circleci
 *.tgz
+coverage
+test
+.*
+vitest*

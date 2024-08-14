@@ -1,5 +1,15 @@
 # Changelog
 
+## 4.0.0
+
+* Convert to typescript, module is still delivered as CommonJS
+* Modify `notFound` to be a function that returns a middleware function
+* Modify `showError` to be a function that returns a middleware function
+* Remove the fastlog default dependency and use `console.error` instead
+* Remove `showErrorWithOptions` function
+* Rename `fastErrorHTTP` to `customErrorHTTP` since the fasterror and fastlog libraries are no longer used
+* Remove CircleCI and use GitHub Actions
+
 ## 3.1.0
 
 * Allows providing a custom logger for the showError middleware
