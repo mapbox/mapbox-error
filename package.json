@@ -8,7 +8,9 @@
   "scripts": {
     "build": "tsc -p .",
     "lint": "eslint . --ext .ts",
-    "test": "vitest --config ./vitest.config.ts --coverage run"
+    "pretest": "npm run lint",
+    "test": "vitest --config ./vitest.config.ts --coverage run",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
