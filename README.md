@@ -47,4 +47,5 @@ next(new InvalidToken());
 npm ci          # install deps
 npm run build   # build project
 npm test        # run tests
+npm run lint    # lint
 ```

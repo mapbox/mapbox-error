@@ -7,7 +7,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc -p .",
-    "lint": "eslint *.js",
+    "lint": "eslint . --ext .ts",
     "test": "vitest --config ./vitest.config.ts --coverage run"
   },
   "repository": {
@@ -16,20 +16,18 @@
   },
   "devDependencies": {
     "@mapbox/eslint-config-mapbox": "^1.2.1",
+    "@types/eslint": "^9.6.0",
     "@types/express": "^4.17.21",
     "@types/node": "^22.2.0",
+    "@typescript-eslint/eslint-plugin": "^8.1.0",
     "@vitest/coverage-v8": "^2.0.5",
-    "eslint": "^5.6.1",
+    "eslint": "^8.57.0",
     "eslint-plugin-node": "^7.0.1",
-    "tape": "3.0.x",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
     "vitest": "^2.0.5"
   },
-  "eslintConfig": {
-    "extends": "@mapbox/eslint-config-mapbox"
-  },
   "engines": {
-    "node": ">=6"
+    "node": ">=20"
   }
 }

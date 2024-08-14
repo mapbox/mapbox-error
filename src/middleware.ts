@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { ErrorHTTP } from './error';
 
 export interface ShowErrorOptions {
-  logger?: Function,
+  logger?(): void,
 }
 
 /**
@@ -24,7 +24,7 @@ export function showError(options?: ShowErrorOptions) {
   const logger = options?.logger || console.error;
   
   // NOTE: next is needed, even if not used, per https://expressjs.com/en/guide/using-middleware.html
-  return function(err: any, req: Request, res: Response, next: NextFunction) { // eslint-disable-line no-unused-vars
+  return function(err: any, req: Request, res: Response, next: NextFunction) { // eslint-disable-line @typescript-eslint/no-unused-vars
     err.status = err.status || 500;
   
     // Output unexpected errors to console but hide them from public eyes.
