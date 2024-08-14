@@ -42,7 +42,7 @@ export function fastErrorHTTP(code: string | number, status?: number) {
   }
 
   return class extends ErrorHTTP {
-    code: string;
+    code: string | number;
 
     constructor(...args: any) {
       const message = format(...args);
