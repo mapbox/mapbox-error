@@ -35,21 +35,17 @@ export function showError(options?: ShowErrorOptions) {
       err.message = 'Internal Server Error';
     }
   
-    const data: Record<string, any> = { 
-      message: err.message
-    };
-  
     // For non-500 ErrorHTTP objects send over any additional keys.
     // This error is one that we crafted ourselves deliberately for
     // public consumption.
     if (err instanceof ErrorHTTP && err.status < 500) {
-      for (const k in err) {
-        if (k === 'status') continue;
-        const { status, ...data } = err;
-      }
+      const { status, ...data } = err;
+      return res.status(status).jsonp(data);
     }
-  
-    res.status(err.status).jsonp(data);
+
+    return res.status(err.status).jsonp({
+      message: err.message
+    });
   }
 } 
 
