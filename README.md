@@ -1,10 +1,16 @@
-[![Build Status](https://travis-ci.org/mapbox/mapbox-error.svg)](https://travis-ci.org/mapbox/mapbox-error)
+[![Run tests](https://github.com/mapbox/mapbox-error/actions/workflows/test.yml/badge.svg)](https://github.com/mapbox/mapbox-error/actions/workflows/test.yml)
 
 # @mapbox/mapbox-error
 
 Generic error middleware for express.js apps.
 
 ### usage
+
+Install
+
+```
+npm i @mapbox/mapbox-error
+```
 
 Example application
 
