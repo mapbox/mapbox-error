@@ -3,7 +3,7 @@
   "description": "Error middleware for express apps",
   "author": "Mapbox (https://www.mapbox.com)",
   "license": "ISC",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc -p .",
@@ -25,6 +25,7 @@
     "@vitest/coverage-v8": "^2.0.5",
     "eslint": "^8.57.0",
     "eslint-plugin-node": "^7.0.1",
+    "pino": "^9.5.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
     "vitest": "^2.0.5"
