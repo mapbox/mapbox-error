@@ -3,7 +3,7 @@
   "description": "Error middleware for express apps",
   "author": "Mapbox (https://www.mapbox.com)",
   "license": "ISC",
-  "version": "4.1.0",
+  "version": "4.1.0-dev1",
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc -p .",
