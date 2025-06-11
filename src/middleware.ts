@@ -10,8 +10,8 @@ export interface ShowErrorOptions {
  * and converting them to JSONP enabled response messages.
  *
  * It will log any >=500 status codes using console.error or a custom
- * logger and update the error message to "Internal Server Error" to 
- * obfuscate any stack or native-level errors that you don't want 
+ * logger and update the error message to "Internal Server Error" to
+ * obfuscate any stack or native-level errors that you don't want
  * to expose to users.
  *
  * Any status codes <500 are assumed to contain error messages crafted
@@ -22,11 +22,12 @@ export interface ShowErrorOptions {
  */
 export function showError(options?: ShowErrorOptions) {
   const logger = options?.logger || console.error;
-  
+
   // NOTE: next is needed, even if not used, per https://expressjs.com/en/guide/using-middleware.html
-  return function(err: any, req: Request, res: Response, next: NextFunction) { // eslint-disable-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  return function (err: any, req: Request, res: Response, _next: NextFunction) {
     err.status = err.status || 500;
-  
+
     // Output unexpected errors to console but hide them from public eyes.
     if (err.status >= 500) {
       err.url = req.url;
@@ -34,7 +35,7 @@ export function showError(options?: ShowErrorOptions) {
       logger(err);
       err.message = 'Internal Server Error';
     }
-  
+
     // For non-500 ErrorHTTP objects send over any additional keys.
     // This error is one that we crafted ourselves deliberately for
     // public consumption.
@@ -46,8 +47,8 @@ export function showError(options?: ShowErrorOptions) {
     return res.status(err.status).jsonp({
       message: err.message
     });
-  }
-} 
+  };
+}
 
 /**
  * Express.js middleware for properly assigning a 404 status code for
@@ -55,7 +56,7 @@ export function showError(options?: ShowErrorOptions) {
  *
  */
 export function notFound() {
-  return function(req: Request, res: Response, next: NextFunction) {
+  return function (req: Request, res: Response, next: NextFunction) {
     next(new ErrorHTTP(404));
-  }
+  };
 }
