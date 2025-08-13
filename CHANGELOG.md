@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.0.0
+
+* builds the package as a CommonJS module for compatibility with existing projects. [#26](https://github.com/mapbox/mapbox-error/pull/26)
+
 ## 4.0.0
 
 * Convert to typescript, module is still delivered as CommonJS
